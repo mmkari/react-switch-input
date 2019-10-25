@@ -35,26 +35,40 @@ const SwitchButton = ({
 
 const StyledSwitchButton = styled(SwitchButton)`
   width: ${({ width }) => `${width}px`};
-  height: ${({ buttonRadius }) => `${2 * buttonRadius}px`};
-  opacity: 0.5;
+  height: ${({ buttonRadius, buttonPinRadius, trackBorderWidth }) =>
+    `${Math.max(
+      2 * buttonRadius,
+      2 * (trackBorderWidth + buttonPinRadius),
+      0
+    )}px`};
+  opacity: 0.4;
   display: flex;
   align-items: center;
   position: relative;
 
-  margin-bottom: 30px;
+  cursor: pointer;
 
   .track {
     margin: 0
-      ${({ buttonRadius, buttonPinRadius }) => buttonRadius - buttonPinRadius}px;
+      ${({ buttonRadius, buttonPinRadius, trackBorderWidth }) =>
+        Math.max(buttonRadius - buttonPinRadius - trackBorderWidth, 0)}px;
 
     background: purple;
     opacity: 0.2;
 
     color: yellow;
-    width: ${({ width, buttonRadius, buttonPinRadius }) =>
-      `${width - 2 * (buttonRadius - buttonPinRadius)}px`};
-    height: ${({ buttonPinRadius }) => `${2 * buttonPinRadius}px`};
-    border-radius: ${({ buttonPinRadius }) => `${2 * buttonPinRadius}px`};
+    width: ${({ width, buttonRadius, buttonPinRadius, trackBorderWidth }) =>
+      `${width -
+        2 *
+          (trackBorderWidth +
+            Math.max(
+              buttonRadius - buttonPinRadius - trackBorderWidth,
+              0
+            ))}px`}; // OR SIMPLY 100% as track has margin already
+    height: ${({ buttonRadius, buttonPinRadius, trackBorderWidth }) =>
+      `${2 * buttonPinRadius}px`};
+    border-radius: ${({ buttonPinRadius, trackBorderWidth }) =>
+      `${2 * buttonPinRadius + trackBorderWidth}px`};
 
     z-index: -1;
     position: absolute;
@@ -63,25 +77,23 @@ const StyledSwitchButton = styled(SwitchButton)`
       background: green;
     }
 
-    border: 1px solid black;
+    border: ${({ trackBorderWidth }) => `${trackBorderWidth}`}px solid black;
   }
-
-  cursor: pointer;
 
   .button {
     width: ${({ buttonRadius, buttonBorderWidth }) =>
       2 * (buttonRadius - buttonBorderWidth)}px;
     height: ${({ buttonRadius, buttonBorderWidth }) =>
       2 * (buttonRadius - buttonBorderWidth)}px;
-    // background: rgba(90, 90, 0, 0.4);
+    // background: red;
     background: radial-gradient(
       circle closest-side at center,
       rgba(0, 255, 0, 1) 0%,
       rgba(0, 255, 0, 1) 1%,
       rgba(90, 90, 0, 0.7) 1%,
       rgba(90, 90, 0, 0.7) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
-      rgba(0, 90, 90, 0.9) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
-      rgba(0, 90, 90, 0.9) 100%
+      rgba(0, 90, 90, 0.5) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
+      rgba(0, 90, 90, 0.5) 100%
     );
 
     border-radius: 50%;
@@ -91,21 +103,30 @@ const StyledSwitchButton = styled(SwitchButton)`
     transition-duration: 0.2s;
 
     // box-shadow: 0px 1px 1px 1px rgba(50, 50, 50, 0.5);
+
+    transform: translate(
+      ${({ buttonRadius, buttonPinRadius, trackBorderWidth }) =>
+        Math.max(trackBorderWidth - (buttonRadius - buttonPinRadius), 0)}px,
+      0
+    );
   }
   .button.checked {
-    background: rgba(255, 0, 0, 0.4);
+    // background: green;
     background: radial-gradient(
       circle closest-side at center,
       rgba(0, 255, 0, 1) 0%,
       rgba(0, 255, 0, 1) 1%,
       rgba(120, 120, 0, 0.3) 1%,
       rgba(120, 120, 0, 0.3) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
-      rgba(255, 0, 0, 0.9) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
-      rgba(255, 0, 0, 0.9) 100%
+      rgba(255, 0, 0, 0.5) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
+      rgba(255, 0, 0, 0.5) 100%
     );
 
     transform: translate(
-      ${({ width, buttonRadius }) => width - 2 * buttonRadius}px,
+      ${({ width, buttonRadius, buttonPinRadius, trackBorderWidth }) =>
+        width -
+        2 * buttonRadius -
+        Math.max(trackBorderWidth - (buttonRadius - buttonPinRadius), 0)}px,
       0
     );
   }
@@ -126,12 +147,14 @@ type DimensionProps = {|
   buttonRadiusProp: number,
   buttonPinRadiusProp: number,
   buttonBorderWidthProp: number,
+  trackBorderWidthProp: number,
 |};
 const computeDimensions = ({
   width,
   buttonRadiusProp,
   buttonPinRadiusProp,
   buttonBorderWidthProp,
+  trackBorderWidthProp,
 }: DimensionProps) => {
   //
   const buttonRadius =
@@ -146,11 +169,12 @@ const computeDimensions = ({
     buttonBorderWidthProp >= buttonRadius
       ? buttonRadius - 1
       : buttonBorderWidthProp; // button cannot be all border, right?
+  const trackBorderWidth = trackBorderWidthProp;
 
   // TODO set custom CSS properties in JS here (?)
   // ...
 
-  return { buttonRadius, buttonPinRadius, buttonBorderWidth };
+  return { buttonRadius, buttonPinRadius, buttonBorderWidth, trackBorderWidth };
 };
 
 type Props = {|
@@ -159,12 +183,14 @@ type Props = {|
   buttonRadius: number,
   buttonPinRadius: number,
   buttonBorderWidth: number,
+  trackBorderWidth: number,
 |};
 const StyledSwitchButtonWithDefaults = ({
   width = 40,
   buttonRadius: buttonRadiusProp = 10,
   buttonPinRadius: buttonPinRadiusProp = buttonRadiusProp,
   buttonBorderWidth: buttonBorderWidthProp = 0,
+  trackBorderWidth: trackBorderWidthProp = 0,
   checked,
   className,
   name,
@@ -178,12 +204,21 @@ const StyledSwitchButtonWithDefaults = ({
         buttonRadiusProp,
         buttonPinRadiusProp,
         buttonBorderWidthProp,
+        trackBorderWidthProp,
       }),
-    [width, buttonRadiusProp, buttonPinRadiusProp, buttonBorderWidthProp]
+    [
+      width,
+      buttonRadiusProp,
+      buttonPinRadiusProp,
+      buttonBorderWidthProp,
+      trackBorderWidthProp,
+    ]
   );
 
   const buttonRatio =
     (dimensions.buttonPinRadius * 1.0) / dimensions.buttonRadius; // TODO remove
+
+  console.log('dimensions: ', dimensions);
 
   return (
     <StyledSwitchButton
@@ -195,6 +230,7 @@ const StyledSwitchButtonWithDefaults = ({
       buttonRadius={dimensions.buttonRadius}
       buttonPinRadius={dimensions.buttonPinRadius}
       buttonBorderWidth={dimensions.buttonBorderWidth}
+      trackBorderWidth={dimensions.trackBorderWidth}
       buttonRatio={buttonRatio}
     />
   );

@@ -35,25 +35,34 @@ module.exports = {
       skipComponentsWithoutExample: true,
       // sectionDepth: 1,
     },
-    // {
-    //   name: 'Examples',
-    //   // components: 'dist/ui/*.js',
-    //   exampleMode: 'hide', // 'hide' | 'collapse' | 'expand'
-    //   usageMode: 'expand', // 'hide' | 'collapse' | 'expand'
-    //   sectionDepth: 1,
-    //   content: 'examples/Examples.md',
+    {
+      name: 'Demo',
+      content: 'examples/Examples_demo.md',
+      usageMode: 'expand', // 'hide' | 'collapse' | 'expand'
+    },
+    {
+      name: 'Examples',
+      // components: 'dist/ui/*.js',
+      exampleMode: 'hide', // 'hide' | 'collapse' | 'expand'
+      usageMode: 'expand', // 'hide' | 'collapse' | 'expand'
+      sectionDepth: 1,
+      // content: 'examples/Examples.md',
 
-    //   sections: [
-    //     {
-    //       name: 'Color mixing',
-    //       content: 'examples/Examples_colorMixing.md',
-    //     },
-    //     {
-    //       name: 'Half stars',
-    //       content: 'examples/Examples_halfStars.md',
-    //     },
-    //   ],
-    // },
+      sections: [
+        {
+          name: 'Pin Radius',
+          content: 'examples/Examples_pinRadius.md',
+        },
+        {
+          name: 'Button Radius',
+          content: 'examples/Examples_buttonRadius.md',
+        },
+        {
+          name: 'Button Border Width',
+          content: 'examples/Examples_buttonBorderWidth.md',
+        },
+      ],
+    },
   ],
   webpackConfig: wpc,
   components: 'src/**/*.{js,jsx}',
