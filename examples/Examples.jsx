@@ -35,9 +35,9 @@ class Examples extends React.Component<Props, State> {
           onChange={this.onChange}
           checked={toggle}
           buttonRadius={18}
-          buttonPinRadius={5}
-          buttonBorderWidth={2}
-          trackBorderWidth={2}
+          buttonPinRadius={8}
+          buttonBorderWidth={5}
+          trackBorderWidth={4}
         />
       </div>
     );

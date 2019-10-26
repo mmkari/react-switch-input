@@ -27,8 +27,8 @@ const SwitchButton = ({
         checked={checked}
         onClick={onClick}
       />
-      <div className={classnames('button', { checked })}>b</div>
-      <div className={classnames('track', { checked })}>c</div>
+      <div className={classnames('button', { checked })} />
+      <div className={classnames('track', { checked })} />
     </label>
   );
 };
@@ -88,9 +88,9 @@ const StyledSwitchButton = styled(SwitchButton)`
     // background: red;
     background: radial-gradient(
       circle closest-side at center,
-      rgba(0, 255, 0, 1) 0%,
-      rgba(0, 255, 0, 1) 1%,
-      rgba(90, 90, 0, 0.7) 1%,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 1) 3%,
+      rgba(90, 90, 0, 0.7) 3%,
       rgba(90, 90, 0, 0.7) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
       rgba(0, 90, 90, 0.5) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
       rgba(0, 90, 90, 0.5) 100%
@@ -114,9 +114,9 @@ const StyledSwitchButton = styled(SwitchButton)`
     // background: green;
     background: radial-gradient(
       circle closest-side at center,
-      rgba(0, 255, 0, 1) 0%,
-      rgba(0, 255, 0, 1) 1%,
-      rgba(120, 120, 0, 0.3) 1%,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 3%,
+      rgba(120, 120, 0, 0.3) 3%,
       rgba(120, 120, 0, 0.3) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
       rgba(255, 0, 0, 0.5) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
       rgba(255, 0, 0, 0.5) 100%
@@ -215,8 +215,11 @@ const StyledSwitchButtonWithDefaults = ({
     ]
   );
 
-  const buttonRatio =
-    (dimensions.buttonPinRadius * 1.0) / dimensions.buttonRadius; // TODO remove
+  const buttonRatio = Math.min(
+    (dimensions.buttonPinRadius * 1.0) /
+      (dimensions.buttonRadius - dimensions.buttonBorderWidth),
+    1.0
+  ); // TODO remove
 
   console.log('dimensions: ', dimensions);
 
