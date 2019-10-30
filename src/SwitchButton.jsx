@@ -99,9 +99,6 @@ const StyledSwitchButton = styled(SwitchButton)`
     border-radius: 50%;
     border: ${({ buttonBorderWidth }) => buttonBorderWidth}px solid black;
 
-    transition-property: transform;
-    transition-duration: 0.2s;
-
     // box-shadow: 0px 1px 1px 1px rgba(50, 50, 50, 0.5);
 
     transform: translate(
@@ -109,7 +106,21 @@ const StyledSwitchButton = styled(SwitchButton)`
         Math.max(trackBorderWidth - (buttonRadius - buttonPinRadius), 0)}px,
       0
     );
+
+    // default box-shadow
+    box-shadow: 0 0 0px 0px transparent, 0 0 0px 0px orange;
+    transition: box-shadow 0.2s, transform 0.2s;
   }
+  :hover .button {
+    box-shadow: 0 0 0px 8px lightgray, 0 0 0px 0px orange;
+  }
+  :hover .button.checked {
+    box-shadow: 0 0 0px 0px lightgray, 0 0 0px 8px orange;
+  }
+  :hover:active .button {
+    box-shadow: 0 0 0px 0px lightgray, 0 0 0px 0px orange;
+  }
+
   .button.checked {
     // background: green;
     background: radial-gradient(
