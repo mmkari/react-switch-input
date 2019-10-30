@@ -72,6 +72,7 @@
     "react-styleguidist": "^9.1.16",
     "serve": "^11.1.0",
     "style-loader": "^1.0.0",
+    "styled-components": "^4.4.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.40.2",
     "webpack-command": "^0.5.0",
@@ -80,10 +81,10 @@
   },
   "peerDependencies": {
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "styled-components": ">= 4.4.0"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
-    "styled-components": "^4.3.2"
+    "classnames": "^2.2.6"
   }
 }
