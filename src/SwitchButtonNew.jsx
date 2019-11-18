@@ -53,8 +53,8 @@ const StyledSwitchButton = styled(SwitchButton)`
       ${({ buttonRadius, buttonPinRadius, trackBorderWidth }) =>
         Math.max(buttonRadius - buttonPinRadius - trackBorderWidth, 0)}px;
 
-    background: purple;
-    opacity: 0.2;
+    background: lightgray;
+    // opacity: 0.2;
 
     color: yellow;
     width: ${({ width, buttonRadius, buttonPinRadius, trackBorderWidth }) =>
@@ -74,7 +74,7 @@ const StyledSwitchButton = styled(SwitchButton)`
     position: absolute;
 
     &.checked {
-      background: green;
+      background: lightgreen;
     }
 
     border: ${({ trackBorderWidth }) => `${trackBorderWidth}`}px solid black;
@@ -85,16 +85,7 @@ const StyledSwitchButton = styled(SwitchButton)`
       2 * (buttonRadius - buttonBorderWidth)}px;
     height: ${({ buttonRadius, buttonBorderWidth }) =>
       2 * (buttonRadius - buttonBorderWidth)}px;
-    // background: red;
-    background: radial-gradient(
-      circle closest-side at center,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 1) 3%,
-      rgba(90, 90, 0, 0.7) 3%,
-      rgba(90, 90, 0, 0.7) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
-      rgba(0, 90, 90, 0.5) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
-      rgba(0, 90, 90, 0.5) 100%
-    );
+    background: red;
 
     border-radius: 50%;
     border: ${({ buttonBorderWidth }) => buttonBorderWidth}px solid black;
@@ -107,31 +98,22 @@ const StyledSwitchButton = styled(SwitchButton)`
       0
     );
 
-    // default box-shadow
-    box-shadow: 0 0 0px 0px transparent, 0 0 0px 0px orange;
+    // // default box-shadow
+    // box-shadow: 0 0 0px 0px transparent, 0 0 0px 0px orange;
     transition: box-shadow 0.2s, transform 0.2s;
   }
-  :hover .button {
-    box-shadow: 0 0 0px 8px lightgray, 0 0 0px 0px orange;
-  }
-  :hover .button.checked {
-    box-shadow: 0 0 0px 0px lightgray, 0 0 0px 8px orange;
-  }
-  :hover:active .button {
-    box-shadow: 0 0 0px 0px lightgray, 0 0 0px 0px orange;
-  }
+  // :hover .button {
+  //   box-shadow: 0 0 0px 8px lightgray, 0 0 0px 0px orange;
+  // }
+  // :hover .button.checked {
+  //   box-shadow: 0 0 0px 0px lightgray, 0 0 0px 8px orange;
+  // }
+  // :hover:active .button {
+  //   box-shadow: 0 0 0px 0px lightgray, 0 0 0px 0px orange;
+  // }
 
   .button.checked {
-    // background: green;
-    background: radial-gradient(
-      circle closest-side at center,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 1) 3%,
-      rgba(120, 120, 0, 0.3) 3%,
-      rgba(120, 120, 0, 0.3) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
-      rgba(255, 0, 0, 0.5) ${({ buttonRatio }) => `${buttonRatio * 100}%`},
-      rgba(255, 0, 0, 0.5) 100%
-    );
+    background: green;
 
     transform: translate(
       ${({ width, buttonRadius, buttonPinRadius, trackBorderWidth }) =>
@@ -168,19 +150,18 @@ const computeDimensions = ({
   trackBorderWidthProp,
 }: DimensionProps) => {
   //
-  const buttonRadius =
-    buttonRadiusProp > 0.5 * width
-      ? Math.floor(0.5 * width)
-      : Math.max(buttonRadiusProp, 1); // max radius is half of component width, min is 1px
-  const buttonPinRadius =
-    buttonPinRadiusProp > buttonRadius
-      ? buttonRadius
-      : Math.max(buttonPinRadiusProp, 1); // max radius is buttonRadius, min is 1px
+  const limitToHalfLength = (val) =>
+    val > 0.5 * width ? Math.floor(0.5 * width) : Math.max(val, 1);
+  const buttonRadius = limitToHalfLength(buttonRadiusProp); // max radius is half of component width, min is 1px
+  const buttonPinRadius = limitToHalfLength(buttonPinRadiusProp);
   const buttonBorderWidth =
     buttonBorderWidthProp >= buttonRadius
       ? buttonRadius - 1
       : buttonBorderWidthProp; // button cannot be all border, right?
-  const trackBorderWidth = trackBorderWidthProp;
+  const trackBorderWidth =
+    trackBorderWidthProp >= buttonPinRadius
+      ? buttonPinRadius - 1
+      : trackBorderWidthProp; // button cannot be all border, right?
 
   // TODO set custom CSS properties in JS here (?)
   // ...

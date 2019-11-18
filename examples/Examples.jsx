@@ -2,6 +2,7 @@
 import * as React from 'react';
 // import './Examples.css';
 import Switch from '../src/SwitchButton';
+import SwitchNew from '../src/SwitchButtonNew';
 
 type Props = {};
 type State = {
@@ -10,14 +11,15 @@ type State = {
 class Examples extends React.Component<Props, State> {
   state = {
     toggle: false,
+    toggle2: false,
   };
 
-  onChange = (value: boolean) => {
-    this.setState({ toggle: value });
+  onChange = (val, value: boolean) => {
+    this.setState({ [val]: value });
   };
 
   render() {
-    const { toggle } = this.state;
+    const { toggle, toggle2 } = this.state;
 
     const width = 80;
 
@@ -32,13 +34,41 @@ class Examples extends React.Component<Props, State> {
       >
         <Switch
           width={width}
-          onChange={this.onChange}
+          onChange={(value) => this.onChange('toggle', value)}
           checked={toggle}
           buttonRadius={18}
           buttonPinRadius={8}
-          buttonBorderWidth={5}
+          buttonBorderWidth={1}
           trackBorderWidth={4}
         />
+
+        <SwitchNew
+          width={width}
+          onChange={(value) => this.onChange('toggle2', value)}
+          checked={toggle2}
+          buttonRadius={20}
+          buttonPinRadius={20}
+          buttonBorderWidth={1}
+          trackBorderWidth={1}
+        />
+        {/* <SwitchNew
+          width={width}
+          onChange={(value) => this.onChange('toggle2', value)}
+          checked={toggle2}
+          buttonRadius={18}
+          buttonPinRadius={10}
+          buttonBorderWidth={1}
+          trackBorderWidth={1}
+        />
+        <SwitchNew
+          width={width}
+          onChange={(value) => this.onChange('toggle2', value)}
+          checked={toggle2}
+          buttonRadius={8}
+          buttonPinRadius={20}
+          buttonBorderWidth={1}
+          trackBorderWidth={1}
+        /> */}
       </div>
     );
   }
